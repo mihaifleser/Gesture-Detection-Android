@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/welcome"
+                android:text="@string/credentials"
                 android:textSize="@dimen/title_size" />
 
             <EditText
@@ -48,11 +48,29 @@
                 android:inputType="textPassword"
                 android:text="@={viewModel.password}" />
 
+            <EditText
+                android:id="@+id/password_input2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="password"
+                android:hint="@string/repeat_password"
+                android:inputType="textPassword"
+                android:text="@={viewModel.repeatPassword}"
+                android:visible="@{!viewModel.loginVisible}" />
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{()->viewModel.onLogin()}"
-                android:text="@string/login" />
+                android:text="@string/login"
+                android:visible="@{viewModel.loginVisible}" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.onLogin()}"
+                android:text="@string/sign_up"
+                android:visible="@{!viewModel.loginVisible}" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
