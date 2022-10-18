@@ -1,13 +1,14 @@
-package com.example.bachelor_app
+package com.example.bachelor_app.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.example.bachelor_app.R
 import com.example.bachelor_app.databinding.ActivityMainBinding
-import com.example.bachelor_app.ui.activities.LoginScreen
 
-class MainActivity : AppCompatActivity() {
+class StartScreen : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(

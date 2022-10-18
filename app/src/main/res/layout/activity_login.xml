@@ -68,7 +68,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{()->viewModel.onLogin()}"
+                android:onClick="@{()->viewModel.onSignUp()}"
                 android:text="@string/sign_up"
                 android:visible="@{!viewModel.loginVisible}" />
 

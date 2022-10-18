@@ -4,6 +4,7 @@
     package="com.example.bachelor_app">
 
     <application
+        android:name=".BachelorApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -16,10 +17,10 @@
 
         <activity
             android:name=".ui.activities.LoginScreen"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".ui.activities.StartScreen" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activities.StartScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
