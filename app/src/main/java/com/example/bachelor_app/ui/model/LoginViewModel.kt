@@ -1,13 +1,11 @@
 package com.example.bachelor_app.ui.model
 
 import androidx.databinding.ObservableField
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.example.bachelor_app.managers.IFirebaseManager
 import com.example.bachelor_app.util.SingleLiveEvent
-import io.reactivex.rxkotlin.subscribeBy
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 interface ILoginViewModel : INetworkViewModel<String> {
     val email: ObservableField<String>
@@ -47,18 +45,15 @@ class LoginViewModel(isLogin: Boolean, private val firebaseManager: IFirebaseMan
         println(email.get() + " " + password.get())
         email.get()?.let { email ->
             password.get()?.let { password ->
-                firebaseManager.createUserWithEmailAndPassword(email, password).subscribeBy(onComplete = {
-                    update.postValue(SIGN_UP)
-                }, onError = {
-                    println(it.message)
-                })
+                viewModelScope.launch(Dispatchers.IO) {
+                    firebaseManager.createUserWithEmailAndPassword(email, password).onSuccess { update.postValue(SIGN_UP) }.onFailure { println(it.message) }
+                }
             }
         }
-
     }
 
     companion object {
-        const val SIGN_UP = "sign up done."
+        const val SIGN_UP = "Sign up done."
     }
 
 }
