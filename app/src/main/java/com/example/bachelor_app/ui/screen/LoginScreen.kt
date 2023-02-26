@@ -6,7 +6,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import com.example.bachelor_app.R
 import com.example.bachelor_app.ui.theme.BachelorAppTheme
 
@@ -18,6 +21,15 @@ fun LoginScreen(onSignUp: (String, String) -> Unit, onLogIn: (String, String) ->
         Column {
             var username by remember { mutableStateOf("") }
             var password by remember { mutableStateOf("") }
+
+            Text(
+                text = stringResource(id = R.string.welcome),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    fontSize = 30.sp
+                )
+            )
 
             Text(text = stringResource(id = R.string.email))
             TextField(
@@ -69,7 +81,7 @@ fun LoginScreen(onSignUp: (String, String) -> Unit, onLogIn: (String, String) ->
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun LoginPreview() {
     BachelorAppTheme {
         LoginScreen({ _, _ -> {} }, { _, _ -> {} })
     }

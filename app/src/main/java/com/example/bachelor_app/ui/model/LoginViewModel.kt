@@ -21,7 +21,13 @@ class LoginViewModel(private val firebaseManager: IFirebaseManager) : ViewModel(
 
     override val onLogin: (String, String) -> Unit = { email, password ->
         println("$email $password")
-
+        viewModelScope.launch(Dispatchers.IO) {
+            firebaseManager.signInWithEmailAndPassword(email, password).onSuccess {
+                update.postValue(LoginMessage.LOGIN to LOG_IN)
+            }.onFailure {
+                update.postValue(LoginMessage.ERROR to it.message.toString())
+            }
+        }
     }
 
     override val onSignUp: (String, String) -> Unit = { email, password ->
@@ -36,7 +42,8 @@ class LoginViewModel(private val firebaseManager: IFirebaseManager) : ViewModel(
     }
 
     companion object {
-        const val SIGN_UP = "Sign up done."
+        const val SIGN_UP = "Sign up done!"
+        const val LOG_IN = "Log in done!"
     }
 
 }

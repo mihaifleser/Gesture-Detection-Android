@@ -8,9 +8,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.example.bachelor_app.BachelorApplication
+import com.example.bachelor_app.R
 import com.example.bachelor_app.managers.IFirebaseManager
 import com.example.bachelor_app.ui.model.ILoginViewModel
+import com.example.bachelor_app.ui.model.LoginMessage
 import com.example.bachelor_app.ui.model.LoginViewModel
 import com.example.bachelor_app.ui.model.LoginViewModelFactory
 import com.example.bachelor_app.ui.screen.LoginScreen
@@ -24,7 +27,7 @@ class LoginFragment : BaseFragment() {
 
     private val viewModel: ILoginViewModel by lazy {
         val factory = LoginViewModelFactory(firebaseManager)
-        ViewModelProvider(this, factory).get(LoginViewModel::class.java)
+        ViewModelProvider(this, factory)[LoginViewModel::class.java]
     }
 
     override fun onAttach(context: Context) {
@@ -52,6 +55,9 @@ class LoginFragment : BaseFragment() {
 
         viewModel.update.observe(viewLifecycleOwner) {
             Toast.makeText(context, it.second, Toast.LENGTH_SHORT).show()
+            if (it.first == LoginMessage.LOGIN) {
+                view.findNavController().navigate(R.id.action_loginFragment_to_sensorsFragment)
+            }
         }
     }
 }

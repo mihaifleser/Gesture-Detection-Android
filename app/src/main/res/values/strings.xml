@@ -8,4 +8,6 @@
     <string name="repeat_password">Repeat Password:</string>
     <string name="login">Log In</string>
     <string name="title_activity_main_screen">MainScreen</string>
+    <string name="connect">Connect To Watch</string>
+    <string name="sensors">Sensors</string>
 </resources>
