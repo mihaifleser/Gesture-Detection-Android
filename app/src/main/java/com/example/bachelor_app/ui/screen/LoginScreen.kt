@@ -15,66 +15,78 @@ import com.example.bachelor_app.ui.theme.BachelorAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(onSignUp: (String, String) -> Unit, onLogIn: (String, String) -> Unit) {
+fun LoginScreen(onSignUp: (String, String) -> Unit, onLogIn: (String, String) -> Unit, onGuest: () -> Unit) {
 
     Surface(modifier = Modifier.padding(dimensionResource(id = R.dimen.medium_padding))) {
-        Column {
+        Column(verticalArrangement = Arrangement.SpaceBetween) {
             var username by remember { mutableStateOf("") }
             var password by remember { mutableStateOf("") }
 
-            Text(
-                text = stringResource(id = R.string.welcome),
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                style = TextStyle(
-                    fontSize = 30.sp
+            Column {
+                Text(
+                    text = stringResource(id = R.string.welcome),
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    style = TextStyle(
+                        fontSize = 30.sp
+                    )
                 )
-            )
 
-            Text(text = stringResource(id = R.string.email))
-            TextField(
-                onValueChange = { username = it },
-                value = username,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-
-            Text(text = stringResource(id = R.string.password))
-            TextField(
-                onValueChange = { password = it },
-                value = password,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = dimensionResource(id = R.dimen.medium_padding)),
-                horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.medium_padding))
-            ) {
-                Button(
-                    onClick = { onSignUp.invoke(username, password) },
+                Text(text = stringResource(id = R.string.email))
+                TextField(
+                    onValueChange = { username = it },
+                    value = username,
                     modifier = Modifier
-                        .weight(1f)
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.sign_up),
-                        modifier = Modifier.padding(dimensionResource(id = R.dimen.small_padding))
-                    )
-                }
-                Button(
-                    onClick = { onLogIn.invoke(username, password) },
+                        .fillMaxWidth()
+                )
+
+                Text(text = stringResource(id = R.string.password))
+                TextField(
+                    onValueChange = { password = it },
+                    value = password,
                     modifier = Modifier
-                        .weight(1f)
+                        .fillMaxWidth()
+                )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = dimensionResource(id = R.dimen.medium_padding), bottom = dimensionResource(id = R.dimen.medium_padding)),
+                    horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.medium_padding))
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.login),
-                        modifier = Modifier.padding(dimensionResource(id = R.dimen.small_padding))
-                    )
+                    Button(
+                        onClick = { onSignUp.invoke(username, password) },
+                        modifier = Modifier
+                            .weight(1f)
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.sign_up),
+                            modifier = Modifier.padding(dimensionResource(id = R.dimen.small_padding))
+                        )
+                    }
+                    Button(
+                        onClick = { onLogIn.invoke(username, password) },
+                        modifier = Modifier
+                            .weight(1f)
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.login),
+                            modifier = Modifier.padding(dimensionResource(id = R.dimen.small_padding))
+                        )
+                    }
                 }
             }
-
+            Button(
+                onClick = onGuest,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f, false)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.login_guest),
+                    modifier = Modifier.padding(dimensionResource(id = R.dimen.small_padding))
+                )
+            }
         }
     }
 }
@@ -83,6 +95,6 @@ fun LoginScreen(onSignUp: (String, String) -> Unit, onLogIn: (String, String) ->
 @Composable
 fun LoginPreview() {
     BachelorAppTheme {
-        LoginScreen({ _, _ -> {} }, { _, _ -> {} })
+        LoginScreen({ _, _ -> {} }, { _, _ -> {} }, {})
     }
 }

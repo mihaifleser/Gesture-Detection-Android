@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 interface ILoginViewModel : INetworkViewModel<Pair<LoginMessage, String>> {
     val onLogin: (String, String) -> Unit
     val onSignUp: (String, String) -> Unit
+    val onGuest: () -> Unit
 }
 
 class LoginViewModel(private val firebaseManager: IFirebaseManager) : ViewModel(), ILoginViewModel {
@@ -39,6 +40,10 @@ class LoginViewModel(private val firebaseManager: IFirebaseManager) : ViewModel(
                 update.postValue(LoginMessage.ERROR to it.message.toString())
             }
         }
+    }
+
+    override val onGuest: () -> Unit = {
+        update.postValue(LoginMessage.LOGIN to LOG_IN)
     }
 
     companion object {

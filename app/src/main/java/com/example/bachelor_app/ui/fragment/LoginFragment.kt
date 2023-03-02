@@ -43,7 +43,8 @@ class LoginFragment : BaseFragment() {
                 BachelorAppTheme {
                     LoginScreen(
                         onSignUp = viewModel.onSignUp,
-                        onLogIn = viewModel.onLogin
+                        onLogIn = viewModel.onLogin,
+                        onGuest = viewModel.onGuest
                     )
                 }
             }
