@@ -1,6 +1,7 @@
 package com.example.bachelor_app.ui.fragment
 
 import android.content.Context
+import android.content.res.AssetManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,8 +23,10 @@ class SensorsFragment : BaseFragment() {
     @Inject
     internal lateinit var messageClient: MessageClient
 
+    private lateinit var assetManager: AssetManager
+
     private val viewModel: ISensorsViewModel by lazy {
-        val factory = SensorsViewModelFactory(messageClient)
+        val factory = SensorsViewModelFactory(messageClient, assetManager)
         ViewModelProvider(this, factory)[SensorsViewModel::class.java]
     }
 
@@ -34,12 +37,12 @@ class SensorsFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
+        assetManager = requireContext().assets
+
         return ComposeView(requireContext()).apply {
             setContent {
                 BachelorAppTheme {
-                    SensorsScreen(
-
-                    )
+                    SensorsScreen(viewModel)
                 }
             }
         }
@@ -47,7 +50,7 @@ class SensorsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.toast.observe(viewLifecycleOwner) {
-            Toast.makeText(context, "Message Received", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         }
     }
 
