@@ -14,6 +14,7 @@ interface ISensorsViewModel {
     val toast: SingleLiveEvent<String>
     val currentSong: MutableState<String>
     val tracker: MutableState<String>
+    val gestures: MutableState<List<String>>
 }
 
 class SensorsViewModel(private val messageClient: MessageClient, private val assetManager: AssetManager) :
@@ -24,6 +25,8 @@ class SensorsViewModel(private val messageClient: MessageClient, private val ass
     override val currentSong: MutableState<String> by lazy { mutableStateOf("") }
 
     override val tracker: MutableState<String> by lazy { mutableStateOf("") }
+
+    override val gestures: MutableState<List<String>> by lazy { mutableStateOf(emptyList()) }
 
     private val mediaPlayer = MediaPlayer()
 
@@ -57,6 +60,7 @@ class SensorsViewModel(private val messageClient: MessageClient, private val ass
         toast.postValue(message)
 
         val gesture = MeasurementType.fromString(message)
+        gesture?.let { gestures.value = gestures.value.plus(it.description) }
         when (gesture) {
             MeasurementType.UP_DOWN -> {
                 if (index >= songs.size - 1) {
@@ -65,6 +69,7 @@ class SensorsViewModel(private val messageClient: MessageClient, private val ass
                     index++
                 }
             }
+
             MeasurementType.LEFT_RIGHT -> {
                 if (index > 0) {
                     index--
@@ -72,6 +77,7 @@ class SensorsViewModel(private val messageClient: MessageClient, private val ass
                     index = 0
                 }
             }
+
             MeasurementType.ROTATE -> {
                 if (mediaPlayer.isPlaying) {
                     mediaPlayer.pause()
@@ -79,6 +85,7 @@ class SensorsViewModel(private val messageClient: MessageClient, private val ass
                     mediaPlayer.start()
                 }
             }
+
             else -> println("Incorrect message")
         }
     }
