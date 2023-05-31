@@ -15,6 +15,10 @@ interface ISensorsViewModel {
     val currentSong: MutableState<String>
     val tracker: MutableState<String>
     val gestures: MutableState<List<String>>
+    val play: MutableState<Boolean>
+    fun next()
+    fun previous()
+    fun stopResume()
 }
 
 class SensorsViewModel(private val messageClient: MessageClient, private val assetManager: AssetManager) :
@@ -27,6 +31,8 @@ class SensorsViewModel(private val messageClient: MessageClient, private val ass
     override val tracker: MutableState<String> by lazy { mutableStateOf("") }
 
     override val gestures: MutableState<List<String>> by lazy { mutableStateOf(emptyList()) }
+
+    override val play: MutableState<Boolean> by lazy { mutableStateOf(true) }
 
     private val mediaPlayer = MediaPlayer()
 
@@ -42,6 +48,7 @@ class SensorsViewModel(private val messageClient: MessageClient, private val ass
             mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
             mediaPlayer.prepare()
             mediaPlayer.start()
+            play.value = true
         }
 
     init {
@@ -63,33 +70,46 @@ class SensorsViewModel(private val messageClient: MessageClient, private val ass
         gesture?.let { gestures.value = gestures.value.plus(it.description) }
         when (gesture) {
             MeasurementType.UP_DOWN -> {
-                if (index >= songs.size - 1) {
-                    index = 0
-                } else {
-                    index++
-                }
+                next()
             }
 
             MeasurementType.LEFT_RIGHT -> {
-                if (index > 0) {
-                    index--
-                } else {
-                    index = 0
-                }
+                previous()
             }
 
             MeasurementType.ROTATE -> {
-                if (mediaPlayer.isPlaying) {
-                    mediaPlayer.pause()
-                } else {
-                    mediaPlayer.start()
-                }
+                stopResume()
             }
 
             else -> println("Incorrect message")
         }
     }
 
+    override fun next() {
+        if (index >= songs.size - 1) {
+            index = 0
+        } else {
+            index++
+        }
+    }
+
+    override fun previous() {
+        if (index > 0) {
+            index--
+        } else {
+            index = 0
+        }
+    }
+
+    override fun stopResume() {
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.pause()
+            play.value = false
+        } else {
+            mediaPlayer.start()
+            play.value = true
+        }
+    }
 }
 
 enum class MeasurementType(val description: String, val type: Int) {

@@ -17,8 +17,8 @@ import com.example.bachelor_app.ui.theme.BachelorAppTheme
 @Composable
 fun LoginScreen(onSignUp: (String, String) -> Unit, onLogIn: (String, String) -> Unit, onGuest: () -> Unit) {
 
-    Surface(modifier = Modifier.padding(dimensionResource(id = R.dimen.medium_padding))) {
-        Column(verticalArrangement = Arrangement.SpaceBetween) {
+    Surface {
+        Column(verticalArrangement = Arrangement.SpaceBetween, modifier = Modifier.padding(dimensionResource(id = R.dimen.medium_padding))) {
             var username by remember { mutableStateOf("") }
             var password by remember { mutableStateOf("") }
 
